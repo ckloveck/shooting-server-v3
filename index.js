@@ -32,7 +32,9 @@ client.once('ready', async () => {
 • Fair Play: Hacking, engine exploits, or misusing commands is strictly prohibited.
         `);
 
-    channel.send({ embeds: [rulesEmbed] });
+  channel.send({
+    content: "@everyone",
+    embeds: [rulesEmbed]
 });
 
 client.login(process.env.TOKEN).catch(err => {
