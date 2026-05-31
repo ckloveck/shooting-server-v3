@@ -1,7 +1,10 @@
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers
+    ]
 });
 
 client.once('ready', async () => {
@@ -9,22 +12,30 @@ client.once('ready', async () => {
 
     const channel = await client.channels.fetch('1510483908032987338');
 
+    // Get total members in the server
+    const guild = client.guilds.cache.first();
+    const memberCount = guild ? guild.memberCount : 0;
+
+    // Set bot status (PLAYING + member count)
+    client.user.setPresence({
+        activities: [{
+            name: `Chiraq Shooting RBX | ${memberCount} players`,
+            type: ActivityType.Playing
+        }],
+        status: 'online'
+    });
+
     const rulesEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setTitle('Discord Rules')
         .setDescription(`
 •No Perm Abusing: Any form of administrative abuse, including retaliatory or spam kicking, results in immediate permission removal.
 • Integrity & Honesty: Lying about server purchases or threatening to harm/nuke the server leads to a permanent ban.
-• Combat Standards: No RDM, VDM, or troll killing. Allow players to respawn without interference to maintain gameplay quality.
-• Fair Play: Hacking, engine exploits, or misusing commands like /r (revive) is strictly prohibited. Fair play is a core pillar.
-• Competitive Respect: Do not interfere with 1v1s, wagers, or ongoing scenes you were not invited to. Cheating in wagers is met with action.
-• Anti-Cheat Protocol: If banned, provide a 2-minute clip as evidence. Tickets for bans older than 1-3 days will be closed.
-• Donator Rules: Donators are prohibited from using Godmode, Superjump, or distributing weapons to non-donators. All standard rules still apply.
+• Combat Standards: No RDM, VDM, or troll killing.
+• Fair Play: Hacking, engine exploits, or misusing commands is strictly prohibited.
         `);
 
-    channel.send({
-        embeds: [rulesEmbed]
-    });
+    channel.send({ embeds: [rulesEmbed] });
 });
 
-client.login(process.env.TOKEN)
+client.login(process.env.TOKEN);
