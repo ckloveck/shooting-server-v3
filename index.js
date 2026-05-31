@@ -3,20 +3,15 @@ console.log("TOKEN LOADED:", !!process.env.TOKEN);
 const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers
-    ]
+    intents: [GatewayIntentBits.Guilds]
 });
-
 client.once('ready', async () => {
     console.log(`${client.user.tag} is online!`);
 
     const channel = await client.channels.fetch('1510483908032987338');
 
     // Get total members in the server
-    const guild = client.guilds.cache.first();
-    const memberCount = guild ? guild.memberCount : 0;
+   const memberCount = 0;
 
     // Set bot status (PLAYING + member count)
     client.user.setPresence({
