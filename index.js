@@ -1,3 +1,5 @@
+console.log("BOT STARTING");
+console.log("TOKEN LOADED:", !!process.env.TOKEN);
 const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require('discord.js');
 
 const client = new Client({
@@ -38,4 +40,6 @@ client.once('ready', async () => {
     channel.send({ embeds: [rulesEmbed] });
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN).catch(err => {
+    console.log("LOGIN ERROR:", err);
+});
